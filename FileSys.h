@@ -4,8 +4,9 @@
 
 #include "Player.h"
 #include "string"
-#include "iostream"
 #include "vector"
+#include "fstream"
+#include "iostream"
 
 
 class FileSys {
@@ -17,7 +18,7 @@ public:
         _filePath = filePath;
     }
 
-    bool saveFile();
+    bool savePlayers(std::vector<Player> & players);
 
     std::vector<Player> loadPlayers();
 };

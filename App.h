@@ -19,9 +19,16 @@ private:
 public:
     explicit App(FileSys & fileSys) : _fileSys(fileSys) { }
 
+    void drawLogin();
+
+    void drawLobby();
+
+    void mainLoop();
+
+
     // Player methods
 
-    Player login(std::string id, std::string password);
+    Player login();
 
     void logout();
 
@@ -37,11 +44,12 @@ public:
 
 
     // File methods
-    void setFileManager(FileSys fileSys);
 
-    bool savePlayers();
+    void savePlayers();
 
-    bool loadPlayers();
+    void loadPlayers() {
+        _players = _fileSys.loadPlayers();
+    }
 };
 
 

@@ -24,6 +24,8 @@ public:
         _chessBoard = chessBoard;
     }
 
+    Game() = default;
+
 
 };
 
