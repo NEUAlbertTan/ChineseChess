@@ -23,7 +23,12 @@ std::vector<Player> FileSys::loadPlayers() {
     try {
         in.open(_filePath);
     } catch (std::exception & e) {
-        std::cerr << "Failed to open players' file.";
+        std::cerr << "Failed to open players' file." << std::endl;
+        exit(-1);
+    }
+
+    if (!in) {
+        std::cerr << "File error!" << std::endl;
         exit(-1);
     }
 

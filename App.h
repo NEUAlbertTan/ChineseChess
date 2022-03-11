@@ -3,6 +3,7 @@
 
 #include "vector"
 #include "string"
+#include "iostream"
 
 #include "Player.h"
 #include "Game.h"
@@ -19,22 +20,23 @@ private:
 public:
     explicit App(FileSys & fileSys) : _fileSys(fileSys) { }
 
-    void drawLogin();
+    void optLoginOrRegister();
 
-    void drawLobby();
+    void loginPage();
+
+    void registerPage();
 
     void mainLoop();
+
+    void gameLobby();
 
 
     // Player methods
 
-    Player login();
-
-    void logout();
-
-    Player registerPlayer(std::string id, std::string password);
-
-    void addPlayer(Player player);
+    void addPlayer(Player & player) {
+        _players.emplace_back(player);
+        savePlayers();
+    }
 
 
     // Game methods

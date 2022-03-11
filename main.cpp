@@ -5,14 +5,13 @@
 
 
 int main() {
-    static std::string path = "./playerFile.txt";
+    static std::string path = "D:\\clionProject\\ChineseChess\\playerFile.txt";
 
     FileSys fileSys(path);
 
     App app(fileSys);
 
-    app.login();
-
+    app.mainLoop();
 
     return 0;
 }
