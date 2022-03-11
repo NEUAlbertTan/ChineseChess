@@ -30,6 +30,15 @@ public:
 
     void gameLobby();
 
+    void showRankList(int page);
+    void viewRankList();
+
+    static void viewIntro();
+
+    void personalSettings();
+
+    void changeNamePage();
+    void changePasswordPage();
 
     // Player methods
 
@@ -40,7 +49,7 @@ public:
 
 
     // Game methods
-    Game startGame();
+    void startGame();
 
     bool endGame();
 

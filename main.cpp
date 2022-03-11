@@ -3,6 +3,7 @@
 
 #include "string"
 
+#include "conio.h"
 
 int main() {
     static std::string path = "D:\\clionProject\\ChineseChess\\playerFile.txt";
