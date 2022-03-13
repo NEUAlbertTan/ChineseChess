@@ -1,5 +1,6 @@
 #include "Player.h"
 
+
 bool Player::setPassword(std::string & password) {
     if (password.size() < 6 || password.size() > 16) {
         return false;
@@ -8,6 +9,7 @@ bool Player::setPassword(std::string & password) {
     _password = password;
     return true;
 }
+
 
 bool Player::decMoney(unsigned int n) {
     if (n > _money) {

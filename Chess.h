@@ -2,8 +2,12 @@
 #define CHINESECHESS_CHESS_H
 
 #include "string"
+#include "DrawerHelper.h"
+#include "iostream"
 
-enum ChessCategory {King, Guard, Bishop, Knight, Rook, Cannon, Pawn};
+
+enum ChessCategory {KING, GUARD, BISHOP, KNIGHT, ROOK, CANNON, PAWN};
+
 
 class Chess {
 private:
@@ -14,6 +18,7 @@ private:
     bool _alive;
 
     unsigned _playerNumber;
+
 
 public:
     Chess(ChessCategory category, unsigned x, unsigned y, int playerNumber) {

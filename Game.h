@@ -3,6 +3,7 @@
 
 #include "Player.h"
 #include "ChessBoard.h"
+#include "DrawerHelper.h"
 
 
 enum GameStatus {PLAYING, PAUSE, END};
@@ -13,19 +14,24 @@ private:
     Player _player1;
     Player _player2;
 
+    int turn = 1;
+
     ChessBoard _chessBoard;
 
     GameStatus _gameStatus;
 
 public:
-    Game(Player & p1, Player & p2, ChessBoard & chessBoard) {
+    Game(Player & p1, Player & p2) {
+        auto dh = DrawerHelper();
         _player1 = p1;
         _player2 = p2;
-        _chessBoard = chessBoard;
+        _chessBoard = ChessBoard(dh);
+        _gameStatus = PLAYING;
     }
 
     Game() = default;
 
+    void startGame();
 
 };
 

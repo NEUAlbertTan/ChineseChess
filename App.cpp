@@ -6,6 +6,7 @@
 
 static const unsigned RANK_PAGE_SIZE = 5;
 
+
 void App::savePlayers() {
     bool status = _fileSys.savePlayers(_players);
     if (!status) {
@@ -15,7 +16,7 @@ void App::savePlayers() {
 
 
 void App::optLoginOrRegister() {
-    // system("cls");
+    system("cls");
 
     std::cout << "1: 登录, 2: 注册, 0: 退出" << std::endl;
     std::cout << "请选择：" << std::endl;
@@ -39,7 +40,7 @@ void App::optLoginOrRegister() {
             }
 
             default: {
-                // system("cls");
+                system("cls");
                 std::cout << "1: 登录, 2: 注册, 0: 退出" << std::endl;
                 std::cout << "请选择：" << std::endl;
             }
@@ -49,7 +50,7 @@ void App::optLoginOrRegister() {
 
 
 void App::loginPage() {
-    // system("cls");
+    system("cls");
     std::string id, password;
 
     std::cout << "ID: ";
@@ -85,7 +86,7 @@ void App::loginPage() {
 
 
 void App::registerPage() {
-    // system("cls");
+    system("cls");
     std::string id, password, name;
 
     std::cout << "ID: ";
@@ -142,8 +143,9 @@ void App::mainLoop() {
     }
 }
 
+
 void App::gameLobby() {
-    // system("cls");
+    system("cls");
     int ch;
 
     while (true) {
@@ -171,20 +173,64 @@ void App::gameLobby() {
                 exit(0);
             }
             default: {
-                // system("cls");
+                system("cls");
                 std::cout << "1: 开始游戏\n2: 查看排行榜\n3: 游戏说明\n4: 个人设置\n0：退出游戏";
             }
         }
     }
 }
 
-void App::startGame() {}
+
+Player App::invitePlayer() {
+    system("cls");
+    fflush(stdin);
+    system("cls");
+    std::string id, password;
+
+    std::cout << "ID: ";
+    std::cin >> id;
+
+    // TODO: replace with *
+    std::cout << "password: ";
+    std::cin >> password;
+
+    Player targetPlayer;
+    bool foundTargetPlayer = false;
+
+    for (auto & p : _players) {
+        if (p.getId() == id && p.getPassword() == password) {
+            targetPlayer = p;
+            foundTargetPlayer = true;
+            break;
+        }
+    }
+
+    if (foundTargetPlayer) {
+        // TODO: replace with Messagebox
+        std::cout << "欢迎：" << targetPlayer.getName() << std::endl;
+        Sleep(1000);
+        return targetPlayer;
+    } else {
+        std::cout << "账号或密码错误";
+        Sleep(1000);
+        return {};
+    }
+}
+
+
+void App::startGame() {
+    Player targetPlayer = invitePlayer();
+    _game = Game(_currentPlayer, targetPlayer);
+
+    _game.startGame();
+}
+
 
 void App::showRankList(int page) {
 
     auto count = _players.size();
     if (page)
-    // system("cls");
+    system("cls");
     std::cout << "1: 上一页; 2: 下一页: 0: 返回主页面" << std::endl;
     std::cout << "当前页: " << page << std::endl;
 
@@ -196,8 +242,9 @@ void App::showRankList(int page) {
 
 }
 
+
 void App::viewRankList() {
-    // system("cls");
+    system("cls");
 
     std::sort(_players.begin(), _players.end(), [&](Player a, Player b) {
         return a.getScore() > b.getScore();
@@ -239,7 +286,7 @@ void App::viewRankList() {
 
 
 void App::viewIntro() {
-    // system("cls");
+    system("cls");
     fflush(stdin);
     std::cout << "该游戏结合了传统象棋与卡牌游戏的特点，玩家可以在象棋对战中使用技能。" << std::endl;
     std::cout << "此处省略一千字" << std::endl;
@@ -247,8 +294,9 @@ void App::viewIntro() {
     getchar();
 }
 
+
 void App::personalSettings() {
-    // system("cls");
+    system("cls");
     printf("ID: %16s, 昵称: %16s\n分数:%16d, 金钱:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
     printf("1: 修改昵称; 2: 修改密码; 0: 返回");
     printf("您的选择: ");
@@ -275,7 +323,7 @@ void App::personalSettings() {
                 return;
             }
             default: {
-                // system("cls");
+                system("cls");
                 printf("ID: %16s, 昵称: %16s\n分数:%16d, 金钱:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
                 printf("1: 修改昵称; 2: 修改密码; 0: 返回");
                 printf("您的选择: ");
@@ -284,8 +332,9 @@ void App::personalSettings() {
     }
 }
 
+
 void App::changeNamePage() {
-    // system("cls");
+    system("cls");
     std::string newName;
     printf("请输入新昵称: ");
     std::cin >> newName;
@@ -299,8 +348,9 @@ void App::changeNamePage() {
     _currentPlayer.setName(newName);
 }
 
+
 void App::changePasswordPage() {
-    // system("cls");
+    system("cls");
     std::string newPassword;
     printf("请输入新密码: ");
     std::cin >> newPassword;
