@@ -18,8 +18,8 @@ void App::savePlayers() {
 void App::optLoginOrRegister() {
     system("cls");
 
-    std::cout << "1: ç™»å½•, 2: æ³¨å†Œ, 0: é€€å‡º" << std::endl;
-    std::cout << "è¯·é€‰æ‹©ï¼š" << std::endl;
+    std::cout << "1: µÇÂ¼, 2: ×¢²á, 0: ÍË³ö" << std::endl;
+    std::cout << "ÇëÑ¡Ôñ£º" << std::endl;
 
     int ch;
 
@@ -41,8 +41,8 @@ void App::optLoginOrRegister() {
 
             default: {
                 system("cls");
-                std::cout << "1: ç™»å½•, 2: æ³¨å†Œ, 0: é€€å‡º" << std::endl;
-                std::cout << "è¯·é€‰æ‹©ï¼š" << std::endl;
+                std::cout << "1: µÇÂ¼, 2: ×¢²á, 0: ÍË³ö" << std::endl;
+                std::cout << "ÇëÑ¡Ôñ£º" << std::endl;
             }
         }
     }
@@ -72,12 +72,12 @@ void App::loginPage() {
 
     if (foundTargetPlayer) {
         // TODO: replace with Messagebox
-        std::cout << "ç™»å½•æˆåŠŸï¼" << std::endl;
-        std::cout << "æ¬¢è¿Žï¼š" << _currentPlayer.getName() << std::endl;
+        std::cout << "µÇÂ¼³É¹¦£¡" << std::endl;
+        std::cout << "»¶Ó­£º" << _currentPlayer.getName() << std::endl;
         Sleep(1000);
         gameLobby();
     } else {
-        std::cout << "è´¦å·æˆ–å¯†ç é”™è¯¯";
+        std::cout << "ÕËºÅ»òÃÜÂë´íÎó";
         Sleep(1000);
         return;
     }
@@ -93,7 +93,7 @@ void App::registerPage() {
     std::cin >> id;
 
     if (id.size() < 6 || id.size() > 16) {
-        std::cout << "IDé•¿åº¦éœ€è¦åœ¨6-16ä½";
+        std::cout << "ID³¤¶ÈÐèÒªÔÚ6-16Î»";
         Sleep(1000);
         return;
     }
@@ -107,7 +107,7 @@ void App::registerPage() {
     }
 
     if (sameID) {
-        std::cout << "IDé‡å¤äº†å™¢";
+        std::cout << "IDÖØ¸´ÁËàÞ";
         Sleep(1000);
         return;
     }
@@ -116,16 +116,16 @@ void App::registerPage() {
     std::cin >> password;
 
     if (password.size() < 6 || password.size() > 16) {
-        std::cout << "å¯†ç é•¿åº¦éœ€è¦åœ¨6-16ä½";
+        std::cout << "ÃÜÂë³¤¶ÈÐèÒªÔÚ6-16Î»";
         Sleep(1000);
         return;
     }
 
-    std::cout << "æ˜µç§°: ";
+    std::cout << "êÇ³Æ: ";
     std::cin >> name;
 
     if (name.size() < 6 || name.size() > 16) {
-        std::cout << "æ˜µç§°é•¿åº¦éœ€è¦åœ¨6-16ä½";
+        std::cout << "êÇ³Æ³¤¶ÈÐèÒªÔÚ6-16Î»";
         Sleep(1000);
         return;
     }
@@ -145,12 +145,12 @@ void App::mainLoop() {
 
 
 void App::gameLobby() {
-    system("cls");
     int ch;
 
     while (true) {
+        system("cls");
         fflush(stdin);
-        std::cout << "1: å¼€å§‹æ¸¸æˆ\n2: æŸ¥çœ‹æŽ’è¡Œæ¦œ\n3: æ¸¸æˆè¯´æ˜Ž\n4: ä¸ªäººè®¾ç½®\n0ï¼šé€€å‡ºæ¸¸æˆ" << std::endl;
+        std::cout << "1: ¿ªÊ¼ÓÎÏ·\n2: ²é¿´ÅÅÐÐ°ñ\n3: ÓÎÏ·ËµÃ÷\n4: ¸öÈËÉèÖÃ\n0£ºÍË³öÓÎÏ·" << std::endl;
         ch = getchar();
         switch (ch) {
             case '1': {
@@ -174,7 +174,7 @@ void App::gameLobby() {
             }
             default: {
                 system("cls");
-                std::cout << "1: å¼€å§‹æ¸¸æˆ\n2: æŸ¥çœ‹æŽ’è¡Œæ¦œ\n3: æ¸¸æˆè¯´æ˜Ž\n4: ä¸ªäººè®¾ç½®\n0ï¼šé€€å‡ºæ¸¸æˆ";
+                std::cout << "1: ¿ªÊ¼ÓÎÏ·\n2: ²é¿´ÅÅÐÐ°ñ\n3: ÓÎÏ·ËµÃ÷\n4: ¸öÈËÉèÖÃ\n0£ºÍË³öÓÎÏ·";
             }
         }
     }
@@ -207,11 +207,11 @@ Player App::invitePlayer() {
 
     if (foundTargetPlayer) {
         // TODO: replace with Messagebox
-        std::cout << "æ¬¢è¿Žï¼š" << targetPlayer.getName() << std::endl;
+        std::cout << "»¶Ó­£º" << targetPlayer.getName() << std::endl;
         Sleep(1000);
         return targetPlayer;
     } else {
-        std::cout << "è´¦å·æˆ–å¯†ç é”™è¯¯";
+        std::cout << "ÕËºÅ»òÃÜÂë´íÎó";
         Sleep(1000);
         return {};
     }
@@ -231,10 +231,10 @@ void App::showRankList(int page) {
     auto count = _players.size();
     if (page)
     system("cls");
-    std::cout << "1: ä¸Šä¸€é¡µ; 2: ä¸‹ä¸€é¡µ: 0: è¿”å›žä¸»é¡µé¢" << std::endl;
-    std::cout << "å½“å‰é¡µ: " << page << std::endl;
+    std::cout << "1: ÉÏÒ»Ò³; 2: ÏÂÒ»Ò³: 0: ·µ»ØÖ÷Ò³Ãæ" << std::endl;
+    std::cout << "µ±Ç°Ò³: " << page << std::endl;
 
-    printf("%16s%16s%16s\n","ID", "æ˜µç§°", "åˆ†æ•°");
+    printf("%16s%16s%16s\n","ID", "êÇ³Æ", "·ÖÊý");
 
     for (int i = (page - 1) * RANK_PAGE_SIZE; i < (count < page * RANK_PAGE_SIZE ? count : page * RANK_PAGE_SIZE); ++i) {
         printf("%16s%16s%16d\n",_players[i].getId().c_str(), _players[i].getName().c_str(), _players[i].getScore());
@@ -257,7 +257,6 @@ void App::viewRankList() {
     int curPage = 1;
 
     while (true) {
-        fflush(stdin);
         ch = getchar();
         switch (ch) {
             case '1': {
@@ -288,26 +287,23 @@ void App::viewRankList() {
 void App::viewIntro() {
     system("cls");
     fflush(stdin);
-    std::cout << "è¯¥æ¸¸æˆç»“åˆäº†ä¼ ç»Ÿè±¡æ£‹ä¸Žå¡ç‰Œæ¸¸æˆçš„ç‰¹ç‚¹ï¼ŒçŽ©å®¶å¯ä»¥åœ¨è±¡æ£‹å¯¹æˆ˜ä¸­ä½¿ç”¨æŠ€èƒ½ã€‚" << std::endl;
-    std::cout << "æ­¤å¤„çœç•¥ä¸€åƒå­—" << std::endl;
-    std::cout << "æŒ‰å›žè½¦é”®è¿”å›žèœå•" << std::endl;
+    std::cout << "¸ÃÓÎÏ·½áºÏÁË´«Í³ÏóÆåÓë¿¨ÅÆÓÎÏ·µÄÌØµã£¬Íæ¼Ò¿ÉÒÔÔÚÏóÆå¶ÔÕ½ÖÐÊ¹ÓÃ¼¼ÄÜ¡£" << std::endl;
+    std::cout << "´Ë´¦Ê¡ÂÔÒ»Ç§×Ö" << std::endl;
+    std::cout << "°´»Ø³µ¼ü·µ»Ø²Ëµ¥" << std::endl;
     getchar();
+    fflush(stdin);
 }
 
 
 void App::personalSettings() {
-    system("cls");
-    printf("ID: %16s, æ˜µç§°: %16s\nåˆ†æ•°:%16d, é‡‘é’±:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
-    printf("1: ä¿®æ”¹æ˜µç§°; 2: ä¿®æ”¹å¯†ç ; 0: è¿”å›ž");
-    printf("æ‚¨çš„é€‰æ‹©: ");
 
     int ch;
 
     while (true) {
-        fflush(stdin);
-        printf("ID: %16s, æ˜µç§°: %16s\nåˆ†æ•°:%16d, é‡‘é’±:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
-        printf("1: ä¿®æ”¹æ˜µç§°; 2: ä¿®æ”¹å¯†ç ; 0: è¿”å›ž");
-        printf("æ‚¨çš„é€‰æ‹©: ");
+        system("cls");
+        printf("ID: %16s, êÇ³Æ: %16s, ·ÖÊý:%16d, ½ðÇ®:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
+        printf("1: ÐÞ¸ÄêÇ³Æ; 2: ÐÞ¸ÄÃÜÂë; 0: ·µ»Ø");
+        printf("ÄúµÄÑ¡Ôñ: ");
         ch = getchar();
 
         switch (ch) {
@@ -324,9 +320,9 @@ void App::personalSettings() {
             }
             default: {
                 system("cls");
-                printf("ID: %16s, æ˜µç§°: %16s\nåˆ†æ•°:%16d, é‡‘é’±:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
-                printf("1: ä¿®æ”¹æ˜µç§°; 2: ä¿®æ”¹å¯†ç ; 0: è¿”å›ž");
-                printf("æ‚¨çš„é€‰æ‹©: ");
+                printf("ID: %16s, êÇ³Æ: %16s\n·ÖÊý:%16d, ½ðÇ®:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
+                printf("1: ÐÞ¸ÄêÇ³Æ; 2: ÐÞ¸ÄÃÜÂë; 0: ·µ»Ø");
+                printf("ÄúµÄÑ¡Ôñ: ");
             }
         }
     }
@@ -336,11 +332,11 @@ void App::personalSettings() {
 void App::changeNamePage() {
     system("cls");
     std::string newName;
-    printf("è¯·è¾“å…¥æ–°æ˜µç§°: ");
+    printf("ÇëÊäÈëÐÂêÇ³Æ: ");
     std::cin >> newName;
 
     if (newName.size() < 6 || newName.size() > 16) {
-        std::cout << "æ˜µç§°é•¿åº¦éœ€è¦åœ¨6-16ä¹‹é—´!\n";
+        std::cout << "êÇ³Æ³¤¶ÈÐèÒªÔÚ6-16Ö®¼ä!\n";
         Sleep(1000);
         return;
     }
@@ -352,11 +348,11 @@ void App::changeNamePage() {
 void App::changePasswordPage() {
     system("cls");
     std::string newPassword;
-    printf("è¯·è¾“å…¥æ–°å¯†ç : ");
+    printf("ÇëÊäÈëÐÂÃÜÂë: ");
     std::cin >> newPassword;
 
     if (newPassword.size() < 6 || newPassword.size() > 16) {
-        std::cout << "å¯†ç é•¿åº¦éœ€è¦åœ¨6-16ä¹‹é—´!\n";
+        std::cout << "ÃÜÂë³¤¶ÈÐèÒªÔÚ6-16Ö®¼ä!\n";
         Sleep(1000);
         return;
     }

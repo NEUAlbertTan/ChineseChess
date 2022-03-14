@@ -2,39 +2,41 @@
 #define CHINESECHESS_CHESS_H
 
 #include "string"
-#include "DrawerHelper.h"
 #include "iostream"
+#include "vector"
+#include "unordered_map"
+
+#include "DrawerHelper.h"
 
 
 enum ChessCategory {KING, GUARD, BISHOP, KNIGHT, ROOK, CANNON, PAWN};
 
 
 class Chess {
-private:
-    ChessCategory _chessCategory;
-
-    unsigned _x, _y;
-
-    bool _alive;
-
-    unsigned _playerNumber;
-
-
 public:
+    short x;
+    short y;
+    ChessCategory chessCategory;
+    bool alive;
+    unsigned playerNumber;
+
     Chess(ChessCategory category, unsigned x, unsigned y, int playerNumber) {
-        _chessCategory = category;
-        _x = x;
-        _y = y;
-        _alive = true;
-        _playerNumber = playerNumber;
+        chessCategory = category;
+        this->x = x;
+        this->y = y;
+        alive = true;
+        this->playerNumber = playerNumber;
     }
 
-    void draw();
+    bool isAtPos(short xx, short yy) const {
+        return xx == this->x && yy == this->y;
+    }
 
-    void move(unsigned tar_x, unsigned tar_y);
+    void draw() const;
 
     void attack();
 
+    void drawChess() const;
 };
 
 

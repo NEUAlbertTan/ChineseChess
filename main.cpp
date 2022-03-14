@@ -1,12 +1,14 @@
 #include "App.h"
-#include "FileSys.h"
+#include "DrawerHelper.h"
 
 #include "string"
 
-#include "conio.h"
 
 int main() {
-    static std::string path = "D:\\clionProject\\ChineseChess\\playerFile.txt";
+
+    DrawerHelper::SetConsoleColor(enmCFC_Black, enmCBC_HighWhite);
+
+    static std::string path = R"(D:\clionProject\ChineseChess\playerFile.txt)";
 
     FileSys fileSys(path);
 

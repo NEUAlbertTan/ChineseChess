@@ -1,6 +1,216 @@
 #include "Game.h"
 
-void Game::startGame() {
+const static int WIN_SCORE = 50;
+const static int WIN_MONEY = 50;
+
+const static int LOSE_DEC_SCORE = 50;
+const static int LOSE_MONEY = 30;
+
+
+void Game::drawGame() {
     _chessBoard.drawChessBoard();
+
+    DrawerHelper::moveCursorTo(11, 1);
+    printf("玩家1");
+    if (_player == 1) {
+        printf("的回合");
+    }
+    DrawerHelper::moveCursorTo(11, 2);
+    printf("昵称: %s", _player1.getName().c_str());
+    DrawerHelper::moveCursorTo(11, 3);
+    printf("天梯分: %d", _player1.getScore());
+    DrawerHelper::moveCursorTo(11, 4);
+    printf("可用技能: ");
+    DrawerHelper::moveCursorTo(11, 5);
+    printf("备用");
+
+    DrawerHelper::moveCursorTo(11, 6);
+    printf("玩家2");
+    if (_player == 2) {
+        printf("的回合");
+    }
+    DrawerHelper::moveCursorTo(11, 7);
+    printf("昵称: %s", _player2.getName().c_str());
+    DrawerHelper::moveCursorTo(11, 8);
+    printf("天梯分: %d", _player2.getScore());
+    DrawerHelper::moveCursorTo(11, 9);
+    printf("可用技能: ");
+    DrawerHelper::moveCursorTo(11, 10);
+    printf("备用");
+
+    DrawerHelper::moveCursorTo(1, 11);
+    printf("输入棋子坐标: ");
+}
+
+
+void Game::startGame() {
+    system("cls");
+
+    while (!check()) {
+        if (updateGame()) {
+            // valid operation, change player
+            if (_player == 1) {
+                _player = 2;
+            } else {
+                _player = 1;
+            }
+        }
+    }
+
+    switch (_gameStatus) {
+        case PLAYER_1_CHECK:
+            _player1.addScore(WIN_SCORE);
+            _player1.addMoney(WIN_MONEY);
+            _player2.decScore(LOSE_DEC_SCORE);
+            _player2.addMoney(LOSE_MONEY);
+            break;
+        case PLAYER_2_CHECK:
+            _player2.addScore(WIN_SCORE);
+            _player2.addMoney(WIN_MONEY);
+            _player1.decScore(LOSE_DEC_SCORE);
+            _player1.addMoney(LOSE_MONEY);
+            break;
+    }
+}
+
+
+bool Game::check() {
+    auto chess_1 = _chessBoard.getChess1();
+    auto chess_2 = _chessBoard.getChess2();
+
+    for (auto &chess: chess_1) {
+        if ((chess.chessCategory == KING) & !chess.alive) {
+            _gameStatus = PLAYER_2_CHECK;
+            return true;
+        }
+    }
+
+    for (auto &chess: chess_2) {
+        if ((chess.chessCategory == KING) & !chess.alive) {
+            _gameStatus = PLAYER_1_CHECK;
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+std::string inputPos() {
+    std::string pos;
+    std::cin >> pos;
+    return pos;
+}
+
+
+bool isValidPos(std::string &pos) {
+    if (pos.size() != 2) {
+        return false;
+    }
+
+    char px = pos[0], py = pos[1];
+
+    return px >= '1' && px <= '9' && py <= 'j' && py >= 'a';
+}
+
+
+int Game::getChessByPos(short x, short y) {
+    if (_player == 1) {
+        for (int i = 0; i < _chessBoard.getChess1().size(); ++i) {
+            if (_chessBoard.getChess1()[i].isAtPos(x, y)) {
+                return i;
+            }
+        }
+    }
+
+    if (_player == 2) {
+        for (int i = 0; i < _chessBoard.getChess2().size(); ++i) {
+            if (_chessBoard.getChess2()[i].isAtPos(x, y)) {
+                return i;
+            }
+        }
+    }
+
+    return -1;
+}
+
+
+bool Game::hasValidChess(short x, short y) {
+
+    if (_player == 1) {
+        for (auto &chess: _chessBoard.getChess1()) {
+            if (chess.alive && chess.isAtPos(x, y)) {
+                return true;
+            }
+        }
+    }
+
+    if (_player == 2) {
+        for (auto &chess: _chessBoard.getChess2()) {
+            if (chess.alive && chess.isAtPos(x, y)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+
+bool Game::updateGame() {
+    system("cls");
+    drawGame();
+    auto srcPos = inputPos();
+
+    if (!isValidPos(srcPos)) {
+        return false;
+    }
+
+    short srcX = srcPos[0] - '1' + 1, srcY = srcPos[1] - 'a' + 1;
+
+    if (!hasValidChess(srcX, srcY)) {
+        return false;
+    }
+
+    int tarChessIndex = getChessByPos(srcX, srcY);
+
+    printf("移动到:");
+
+    auto tarPos = inputPos();
+
+    if (!isValidPos(tarPos)) {
+        return false;
+    }
+    short tarX = tarPos[0] - '1' + 1, tarY = tarPos[1] - 'a' + 1;
+
+    if (tarX == srcX && tarY == srcY) {
+        return false;
+    }
+
+    if (!moveChess(tarChessIndex, tarX, tarY)) {
+        return false;
+    }
+
+    return true;
+}
+
+
+bool Game::moveChess(int tarChessIndex, short tarX, short tarY) {
+    ChessCategory cate;
+    if (_player == 1) {
+        cate = _chessBoard.getChess1()[tarChessIndex].chessCategory;
+    } else {
+        cate = _chessBoard.getChess2()[tarChessIndex].chessCategory;
+    }
+
+    MOVE_RESULT moveRes = MoveHelper::MoveChess(cate, _player, tarChessIndex, tarX, tarY, _chessBoard);
+
+    if (moveRes == MOVE_FAIL) {
+        return false;
+    }
+
+    // TODO: eat chess
+
+    return moveRes != MOVE_FAIL;
 
 }

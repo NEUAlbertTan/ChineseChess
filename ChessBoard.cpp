@@ -34,10 +34,21 @@ std::vector<Chess> ChessBoard::genChess(int turn) {
 
 
 void ChessBoard::drawChessBoard() {
+    for (int i = 1; i <= 9; ++i) {
+        DrawerHelper::moveCursorTo(i, 0);
+        printf("%d", i);
+    }
+    for (int i = 0; i < 10; ++i) {
+        DrawerHelper::moveCursorTo(0, i + 1);
+        printf("%c", 'a' + i);
+    }
+
     for (auto & chess : _chess1) {
-        chess.draw();
+        chess.drawChess();
     }
     for (auto & chess : _chess2) {
-        chess.draw();
+        chess.drawChess();
     }
+
+
 }

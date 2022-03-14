@@ -1,29 +1,71 @@
 #include "Chess.h"
 
 
-void Chess::draw() {
-    switch (_chessCategory) {
+static std::unordered_map<ChessCategory, char> cateCharMap{
+        {KING, 'J'},
+        {GUARD, 'S'},
+        {BISHOP, 'X'},
+        {KNIGHT, 'M'},
+        {ROOK, 'C'},
+        {CANNON, 'P'},
+        {PAWN, 'B'},
+};
+
+
+void Chess::draw() const {
+    if (!alive) {
+        return;
+    }
+
+    switch (chessCategory) {
         case KING:
-            DrawerHelper::moveCursorTo(_x, _y);
-            std::cout << (_playerNumber == 1 ? 'J' : 'j');
+            DrawerHelper::moveCursorTo(x, y);
+            if (playerNumber == 1) {
+                DrawerHelper::SetConsoleColor(enmCFC_Red);
+            } else {
+                DrawerHelper::SetConsoleColor(enmCFC_Black);
+            }
+            printf("J");
+            DrawerHelper::SetConsoleColor();
             break;
         case GUARD:
-            std::cout << (_playerNumber == 1 ? 'S' : 's');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'S' : 's'));
             break;
         case BISHOP:
-            std::cout << (_playerNumber == 1 ? 'X' : 'x');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'X' : 'x'));
             break;
         case KNIGHT:
-            std::cout << (_playerNumber == 1 ? 'M' : 'm');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'M' : 'm'));
             break;
         case ROOK:
-            std::cout << (_playerNumber == 1 ? 'C' : 'c');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'C' : 'c'));
             break;
         case CANNON:
-            std::cout << (_playerNumber == 1 ? 'P' : 'p');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'P' : 'p'));
             break;
         case PAWN:
-            std::cout << (_playerNumber == 1 ? 'B' : 'b');
+            DrawerHelper::moveCursorTo(x, y);
+            printf("%c",(playerNumber == 1 ? 'B' : 'b'));
             break;
     }
+}
+
+
+
+void Chess::drawChess() const {
+    char chessChar = cateCharMap[chessCategory];
+
+    DrawerHelper::moveCursorTo(x, y);
+    if (playerNumber == 1) {
+        DrawerHelper::SetConsoleColor(enmCFC_Red);
+    } else {
+        DrawerHelper::SetConsoleColor(enmCFC_Black);
+    }
+    printf("%c", chessChar);
+    DrawerHelper::SetConsoleColor();
 }
