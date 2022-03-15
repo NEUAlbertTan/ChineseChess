@@ -16,6 +16,8 @@ class Game {
 private:
     Player _player1;
     Player _player2;
+    std::string _playerID1;
+    std::string _playerID2;
 
     int _player = 1;
 
@@ -24,16 +26,18 @@ private:
     GameStatus _gameStatus;
 
 public:
-    Game(Player & p1, Player & p2) {
+    Game(Player & p1, Player & p2, std::string &id1, std::string &id2) {
         _player1 = p1;
         _player2 = p2;
+        _playerID1 = id1;
+        _playerID2 = id2;
         _chessBoard = ChessBoard();
         _gameStatus = PLAYING;
     }
 
     Game() = default;
 
-    void startGame();
+    GameStatus startGame();
 
     void drawGame();
 

@@ -1,10 +1,5 @@
 #include "Game.h"
 
-const static int WIN_SCORE = 50;
-const static int WIN_MONEY = 50;
-
-const static int LOSE_DEC_SCORE = 50;
-const static int LOSE_MONEY = 30;
 
 
 void Game::drawGame() {
@@ -21,8 +16,6 @@ void Game::drawGame() {
     printf("天梯分: %d", _player1.getScore());
     DrawerHelper::moveCursorTo(11, 4);
     printf("可用技能: ");
-    DrawerHelper::moveCursorTo(11, 5);
-    printf("备用");
 
     DrawerHelper::moveCursorTo(11, 6);
     printf("玩家2");
@@ -35,15 +28,13 @@ void Game::drawGame() {
     printf("天梯分: %d", _player2.getScore());
     DrawerHelper::moveCursorTo(11, 9);
     printf("可用技能: ");
-    DrawerHelper::moveCursorTo(11, 10);
-    printf("备用");
 
     DrawerHelper::moveCursorTo(1, 11);
     printf("输入棋子坐标: ");
 }
 
 
-void Game::startGame() {
+GameStatus Game::startGame() {
     system("cls");
 
     while (!check()) {
@@ -57,20 +48,7 @@ void Game::startGame() {
         }
     }
 
-    switch (_gameStatus) {
-        case PLAYER_1_CHECK:
-            _player1.addScore(WIN_SCORE);
-            _player1.addMoney(WIN_MONEY);
-            _player2.decScore(LOSE_DEC_SCORE);
-            _player2.addMoney(LOSE_MONEY);
-            break;
-        case PLAYER_2_CHECK:
-            _player2.addScore(WIN_SCORE);
-            _player2.addMoney(WIN_MONEY);
-            _player1.decScore(LOSE_DEC_SCORE);
-            _player1.addMoney(LOSE_MONEY);
-            break;
-    }
+    return _gameStatus;
 }
 
 
@@ -204,12 +182,6 @@ bool Game::moveChess(int tarChessIndex, short tarX, short tarY) {
     }
 
     MOVE_RESULT moveRes = MoveHelper::MoveChess(cate, _player, tarChessIndex, tarX, tarY, _chessBoard);
-
-    if (moveRes == MOVE_FAIL) {
-        return false;
-    }
-
-    // TODO: eat chess
 
     return moveRes != MOVE_FAIL;
 

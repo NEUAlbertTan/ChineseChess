@@ -1,7 +1,7 @@
 #include "ChessBoard.h"
 
 
-static int getY(int turn, int y){
+static short getY(int turn, short y){
     if (turn == 1) {
         return y;
     } else {
@@ -49,6 +49,4 @@ void ChessBoard::drawChessBoard() {
     for (auto & chess : _chess2) {
         chess.drawChess();
     }
-
-
 }

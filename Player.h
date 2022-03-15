@@ -25,7 +25,6 @@ public:
     Player() = default;
 
     std::string getId() {return _id;}
-    void setId(std::string & id) {_id = id;}
 
     std::string getPassword() {return _password;};
     bool setPassword(std::string & password);

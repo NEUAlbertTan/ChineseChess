@@ -4,7 +4,13 @@
 #include "windows.h"
 #include "algorithm"
 
+
 static const unsigned RANK_PAGE_SIZE = 5;
+
+const static int WIN_SCORE = 50;
+const static int WIN_MONEY = 50;
+const static int LOSE_DEC_SCORE = 50;
+const static int LOSE_MONEY = 30;
 
 
 void App::savePlayers() {
@@ -64,6 +70,7 @@ void App::loginPage() {
 
     for (auto & p : _players) {
         if (p.getId() == id && p.getPassword() == password) {
+            _currentPlayerID = id;
             _currentPlayer = p;
             foundTargetPlayer = true;
             break;
@@ -73,7 +80,6 @@ void App::loginPage() {
     if (foundTargetPlayer) {
         // TODO: replace with Messagebox
         std::cout << "登录成功！" << std::endl;
-        std::cout << "欢迎：" << _currentPlayer.getName() << std::endl;
         Sleep(1000);
         gameLobby();
     } else {
@@ -173,15 +179,14 @@ void App::gameLobby() {
                 exit(0);
             }
             default: {
-                system("cls");
-                std::cout << "1: 开始游戏\n2: 查看排行榜\n3: 游戏说明\n4: 个人设置\n0：退出游戏";
+                break;
             }
         }
     }
 }
 
 
-Player App::invitePlayer() {
+std::string App::invitePlayer() {
     system("cls");
     fflush(stdin);
     system("cls");
@@ -195,11 +200,13 @@ Player App::invitePlayer() {
     std::cin >> password;
 
     Player targetPlayer;
+    std::string targetPlayerID;
     bool foundTargetPlayer = false;
 
     for (auto & p : _players) {
         if (p.getId() == id && p.getPassword() == password) {
             targetPlayer = p;
+            targetPlayerID = id;
             foundTargetPlayer = true;
             break;
         }
@@ -209,20 +216,62 @@ Player App::invitePlayer() {
         // TODO: replace with Messagebox
         std::cout << "欢迎：" << targetPlayer.getName() << std::endl;
         Sleep(1000);
-        return targetPlayer;
+        return targetPlayerID;
     } else {
         std::cout << "账号或密码错误";
         Sleep(1000);
-        return {};
+        return "";
     }
 }
 
 
 void App::startGame() {
-    Player targetPlayer = invitePlayer();
-    _game = Game(_currentPlayer, targetPlayer);
+    std::string targetPlayerID = invitePlayer();
+    if (targetPlayerID.empty()) {
+        return;
+    }
+    Player tarPlayer;
+    for (auto &p: _players) {
+        if (p.getId() == targetPlayerID) {
+            tarPlayer = p;
+            break;
+        }
+    }
+    _game = Game(_currentPlayer, tarPlayer,_currentPlayerID, targetPlayerID);
 
-    _game.startGame();
+    GameStatus gameResult = _game.startGame();
+
+    gameSettlement(gameResult, _currentPlayerID, targetPlayerID);
+
+}
+
+
+void App::gameSettlement(GameStatus gameResult, std::string &playerID1, std::string &playerID2) {
+    switch (gameResult) {
+        case PLAYER_1_CHECK:
+            for (auto &p: _players) {
+                if (p.getId() == playerID1) {
+                    p.addScore(WIN_SCORE);
+                    p.addMoney(WIN_MONEY);
+                } else if (p.getId() == playerID2) {
+                    p.decScore(LOSE_DEC_SCORE);
+                    p.addMoney(LOSE_MONEY);
+                }
+            }
+            break;
+        case PLAYER_2_CHECK:
+            for (auto &p: _players) {
+                if (p.getId() == playerID2) {
+                    p.addScore(WIN_SCORE);
+                    p.addMoney(WIN_MONEY);
+                } else if (p.getId() == playerID1) {
+                    p.decScore(LOSE_DEC_SCORE);
+                    p.addMoney(LOSE_MONEY);
+                }
+            }
+            break;
+    }
+    savePlayers();
 }
 
 
@@ -316,13 +365,11 @@ void App::personalSettings() {
                 break;
             }
             case '0': {
+                savePlayers();
                 return;
             }
             default: {
-                system("cls");
-                printf("ID: %16s, 昵称: %16s\n分数:%16d, 金钱:%16d\n", _currentPlayer.getId().c_str(), _currentPlayer.getName().c_str(), _currentPlayer.getScore(), _currentPlayer.getMoney());
-                printf("1: 修改昵称; 2: 修改密码; 0: 返回");
-                printf("您的选择: ");
+                break;
             }
         }
     }
@@ -341,7 +388,13 @@ void App::changeNamePage() {
         return;
     }
 
-    _currentPlayer.setName(newName);
+    for (auto &p: _players) {
+        if (p.getId() == _currentPlayerID) {
+            _currentPlayer.setName(newName);
+            p.setName(newName);
+            break;
+        }
+    }
 }
 
 
@@ -357,5 +410,10 @@ void App::changePasswordPage() {
         return;
     }
 
-    _currentPlayer.setPassword(newPassword);
+    for (auto &p: _players) {
+        if (p.getId() == _currentPlayerID) {
+            p.setPassword(newPassword);
+            break;
+        }
+    }
 }

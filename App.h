@@ -13,7 +13,7 @@
 class App {
 private:
     std::vector<Player> _players;
-    // TODO: currentPlayer should be reference
+    std::string _currentPlayerID;
     Player _currentPlayer;
     Game _game;
     FileSys _fileSys;
@@ -43,6 +43,15 @@ public:
 
     void changePasswordPage();
 
+    Player getPlayerById(std::string &id) {
+        for (auto &p : _players) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        return {};
+    }
+
     // Player methods
 
     void addPlayer(Player & player) {
@@ -51,8 +60,9 @@ public:
     }
 
     // Game methods
-    Player invitePlayer();
+    std::string invitePlayer();
     void startGame();
+    void gameSettlement(GameStatus gameResult, std::string &playerID1, std::string &plaerID2);
 
     // File methods
     void savePlayers();

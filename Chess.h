@@ -20,7 +20,7 @@ public:
     bool alive;
     unsigned playerNumber;
 
-    Chess(ChessCategory category, unsigned x, unsigned y, int playerNumber) {
+    Chess(ChessCategory category, short x, short y, int playerNumber) {
         chessCategory = category;
         this->x = x;
         this->y = y;
