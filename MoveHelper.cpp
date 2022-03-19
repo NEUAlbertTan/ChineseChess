@@ -38,6 +38,59 @@ bool blockedByAlly(short tarX, short tarY, unsigned player, ChessBoard &chessBoa
 }
 
 
+bool leadToKingFaceToFace(int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard) {
+    int srcX, srcY;
+    if (player == 1) {
+        auto c = chessBoard.getChess1()[chessIndex];
+        srcX = c.x;
+        srcY = c.y;
+    } else {
+        auto c = chessBoard.getChess2()[chessIndex];
+        srcX = c.x;
+        srcY = c.y;
+    }
+    short king1x = 0, king1y = 0, king2x = 0, king2y = 0;
+    for (auto &c: chessBoard.getChess1()) {
+        if (c.chessCategory == KING) {
+            king1x = c.x;
+            king1y = c.y;
+            break;
+        }
+    }
+    for (auto &c: chessBoard.getChess2()) {
+        if (c.chessCategory == KING) {
+            king2x = c.x;
+            king2y = c.y;
+            break;
+        }
+    }
+
+    if (king1x != king2x) {
+        return false;
+    }
+
+    if (king1x != srcX) {
+        return false;
+    }
+
+    int chessCountBetweenKings = 0;
+    for (auto &c: chessBoard.getChess1()) {
+        if (c.alive && c.x == king1x && (king1y < c.y && c.y < king2y || king1y > c.y && c.y > king2y)) {
+            ++chessCountBetweenKings;
+            break;
+        }
+    }
+    for (auto &c: chessBoard.getChess2()) {
+        if (c.alive && c.x == king1x && (king1y < c.y && c.y < king2y || king1y > c.y && c.y > king2y)) {
+            ++chessCountBetweenKings;
+            break;
+        }
+    }
+
+    return chessCountBetweenKings == 1 && tarX != srcX;
+}
+
+
 bool MoveHelper::tryEat(int player, short tarX, short tarY, ChessBoard &chessBoard) {
     if (player == 1) {
         for (auto &c: chessBoard.getChess2()) {
@@ -64,12 +117,13 @@ bool MoveHelper::kingCanMove(int player, int chessIndex, short tarX, short tarY,
     /****** king face to face ******/
 
     bool faceToFace = false;
-    short anotherKingX = 0;
+    short anotherKingX = 0, anotherKingY = 0;
 
     if (player == 1) {
         for (auto &c: chessBoard.getChess2()) {
             if (c.chessCategory == KING) {
                 anotherKingX = c.x;
+                anotherKingY = c.y;
                 break;
             }
         }
@@ -89,13 +143,13 @@ bool MoveHelper::kingCanMove(int player, int chessIndex, short tarX, short tarY,
 
     if (faceToFace) {
         for (auto &c: chessBoard.getChess1()) {
-            if (c.chessCategory != KING && c.alive && c.x == tarX) {
+            if (c.alive && c.x == tarX && (tarY < c.y && c.y < anotherKingY || tarY > c.y && c.y > anotherKingY)) {
                 faceToFace = false;
                 break;
             }
         }
         for (auto &c: chessBoard.getChess2()) {
-            if (c.chessCategory != KING && c.alive && c.x == tarX) {
+            if (c.alive && c.x == tarX && (tarY < c.y && c.y < anotherKingY || tarY > c.y && c.y > anotherKingY)) {
                 faceToFace = false;
                 break;
             }
@@ -410,6 +464,10 @@ bool MoveHelper::pawnCanMove(int player, int chessIndex, short tarX, short tarY,
 MOVE_RESULT MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard) {
 
     if (blockedByAlly(tarX, tarY, player, chessBoard)) {
+        return MOVE_FAIL;
+    }
+
+    if (cate != KING && leadToKingFaceToFace(player, chessIndex, tarX, tarY, chessBoard)) {
         return MOVE_FAIL;
     }
 

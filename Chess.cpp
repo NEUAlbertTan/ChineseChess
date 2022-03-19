@@ -57,6 +57,9 @@ void Chess::draw() const {
 
 
 void Chess::drawChess() const {
+    if (!alive) {
+        return;
+    }
     char chessChar = cateCharMap[chessCategory];
 
     DrawerHelper::moveCursorTo(x, y);

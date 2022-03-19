@@ -22,8 +22,8 @@ public:
 
     void drawChessBoard();
 
-    std::vector<Chess> getChess1() {return _chess1;}
-    std::vector<Chess> getChess2() {return _chess2;}
+    std::vector<Chess> & getChess1() {return _chess1;}
+    std::vector<Chess> & getChess2() {return _chess2;}
 
 };
 

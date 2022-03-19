@@ -1,6 +1,5 @@
 #include "App.h"
 #include <cstdlib>
-#include "conio.h"
 #include "windows.h"
 #include "algorithm"
 
@@ -226,6 +225,7 @@ std::string App::invitePlayer() {
 
 
 void App::startGame() {
+    // TODO: socket invite
     std::string targetPlayerID = invitePlayer();
     if (targetPlayerID.empty()) {
         return;

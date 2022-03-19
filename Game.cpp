@@ -1,5 +1,6 @@
 #include "Game.h"
 
+const std::string surrenderCode = "gg";
 
 
 void Game::drawGame() {
@@ -88,7 +89,7 @@ bool isValidPos(std::string &pos) {
 
     char px = pos[0], py = pos[1];
 
-    return px >= '1' && px <= '9' && py <= 'j' && py >= 'a' || pos == "00";
+    return px >= '1' && px <= '9' && py <= 'j' && py >= 'a' || pos == surrenderCode;
 }
 
 
@@ -160,7 +161,7 @@ bool Game::updateGame() {
     auto srcPos = inputPos();
 
     // surrender
-    if (srcPos == "00") {
+    if (srcPos == surrenderCode) {
         surrender();
         return false;
     }
@@ -182,7 +183,7 @@ bool Game::updateGame() {
 
     auto tarPos = inputPos();
     // surrender
-    if (srcPos == "00") {
+    if (srcPos == surrenderCode) {
         surrender();
         return false;
     }
