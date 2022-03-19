@@ -56,7 +56,6 @@ void Chess::draw() const {
 }
 
 
-
 void Chess::drawChess() const {
     char chessChar = cateCharMap[chessCategory];
 

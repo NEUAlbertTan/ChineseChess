@@ -43,6 +43,8 @@ public:
 
     bool updateGame();
 
+    void surrender();
+
     bool hasValidChess(short x, short y);
 
     int getChessByPos(short x, short y);

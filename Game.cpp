@@ -88,7 +88,7 @@ bool isValidPos(std::string &pos) {
 
     char px = pos[0], py = pos[1];
 
-    return px >= '1' && px <= '9' && py <= 'j' && py >= 'a';
+    return px >= '1' && px <= '9' && py <= 'j' && py >= 'a' || pos == "00";
 }
 
 
@@ -135,10 +135,35 @@ bool Game::hasValidChess(short x, short y) {
 }
 
 
+void Game::surrender() {
+    if (_player == 1) {
+        for (auto &c: _chessBoard.getChess1()) {
+            if (c.chessCategory == KING) {
+                c.alive = false;
+                break;
+            }
+        }
+    } else {
+        for (auto &c: _chessBoard.getChess2()) {
+            if (c.chessCategory == KING) {
+                c.alive = false;
+                break;
+            }
+        }
+    }
+}
+
+
 bool Game::updateGame() {
     system("cls");
     drawGame();
     auto srcPos = inputPos();
+
+    // surrender
+    if (srcPos == "00") {
+        surrender();
+        return false;
+    }
 
     if (!isValidPos(srcPos)) {
         return false;
@@ -150,11 +175,17 @@ bool Game::updateGame() {
         return false;
     }
 
+
     int tarChessIndex = getChessByPos(srcX, srcY);
 
     printf("ÒÆ¶¯µ½:");
 
     auto tarPos = inputPos();
+    // surrender
+    if (srcPos == "00") {
+        surrender();
+        return false;
+    }
 
     if (!isValidPos(tarPos)) {
         return false;
