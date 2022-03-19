@@ -417,26 +417,38 @@ MOVE_RESULT MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex
     switch (cate) {
         case KING:
             canMove = kingCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case GUARD:
             canMove = guardCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case BISHOP:
             canMove = bishopCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case KNIGHT:
             canMove = knightCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case ROOK:
             canMove = rookCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case CANNON:
             canMove = cannonCanMove(player, chessIndex, tarX, tarY, chessBoard);
+            break;
         case PAWN:
             canMove = pawnCanMove(player, chessIndex, tarX, tarY, chessBoard);
-        default:
-            return MOVE_FAIL;
+            break;
     }
 
     if (!canMove) {
         return MOVE_FAIL;
     } else {
         bool eatRes = tryEat(player, tarX, tarY, chessBoard);
+        if (player == 1) {
+            chessBoard.getChess1()[chessIndex].setXY(tarX, tarY);
+        } else {
+            chessBoard.getChess2()[chessIndex].setXY(tarX, tarY);
+        }
         return eatRes ? EAT : PLAIN;
     }
+
+
 }

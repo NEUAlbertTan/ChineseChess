@@ -37,6 +37,12 @@ public:
     void attack();
 
     void drawChess() const;
+
+    void setXY(short xx, short yy) {
+        this->x = xx;
+        this->y = yy;
+    }
+
 };
 
 
