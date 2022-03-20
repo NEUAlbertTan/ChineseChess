@@ -8,7 +8,7 @@ int main() {
 
     DrawerHelper::SetConsoleColor(enmCFC_Black, enmCBC_HighWhite);
 
-    static std::string path = R"(D:\clionProject\ChineseChess\playerFile.txt)";
+    static std::string path = "players.txt";
 
     FileSys fileSys(path);
 

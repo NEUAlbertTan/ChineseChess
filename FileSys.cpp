@@ -3,6 +3,7 @@
 bool FileSys::savePlayers(std::vector<Player> & players) {
     std::ofstream out;
 
+
     try {
         out.open(_filePath);
     } catch (std::exception & e) {
@@ -19,6 +20,10 @@ bool FileSys::savePlayers(std::vector<Player> & players) {
 }
 
 std::vector<Player> FileSys::loadPlayers() {
+    // if the file does not exit
+    auto f = fopen(_filePath.c_str(), "a+");
+    fclose(f);
+
     std::ifstream in;
     try {
         in.open(_filePath);
@@ -45,6 +50,9 @@ std::vector<Player> FileSys::loadPlayers() {
 
         Player player(id, password, name, score, money);
 
+        if (id.empty() || password.empty() || name.empty()) {
+            continue;
+        }
         players.emplace_back(player);
     }
 

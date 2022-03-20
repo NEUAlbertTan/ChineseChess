@@ -301,7 +301,7 @@ void App::showRankList(int page) {
 void App::viewRankList() {
     system("cls");
 
-    std::sort(_players.begin(), _players.end(), [&](Player a, Player b) {
+    std::sort(_players.begin(), _players.end(), [&](Player & a, Player & b) {
         return a.getScore() > b.getScore();
     });
 
