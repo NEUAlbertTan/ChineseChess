@@ -21,14 +21,23 @@ void App::savePlayers() {
 
 
 void App::optLoginOrRegister() {
-    system("cls");
-
-    std::cout << "1: 登录, 2: 注册, 0: 退出" << std::endl;
-    std::cout << "请选择：" << std::endl;
-
-    int ch;
-
     while (true) {
+        system("cls");
+        DrawerHelper::drawFrame(0, 0, 15, 8);
+
+        DrawerHelper::moveCursorTo(2, 2);
+        std::cout << "象棋-技能版" << std::endl;
+
+        DrawerHelper::moveCursorTo(2, 3);
+        std::cout << "1: 登录" << std::endl;
+        DrawerHelper::moveCursorTo(2, 4);
+        std::cout << "2: 注册" << std::endl;
+        DrawerHelper::moveCursorTo(2, 5);
+        std::cout << "0: 退出" << std::endl;
+        DrawerHelper::moveCursorTo(2, 6);
+        std::cout << "请选择：";
+
+        int ch;
         fflush(stdin);
         ch = getchar();
         switch (ch) {
@@ -43,12 +52,6 @@ void App::optLoginOrRegister() {
             case '0': {
                 exit(0);
             }
-
-            default: {
-                system("cls");
-                std::cout << "1: 登录, 2: 注册, 0: 退出" << std::endl;
-                std::cout << "请选择：" << std::endl;
-            }
         }
     }
 }
@@ -62,7 +65,7 @@ void App::loginPage() {
     std::cin >> id;
 
     // TODO: replace with *
-    std::cout << "password: ";
+    std::cout << "密码: ";
     std::cin >> password;
 
     bool foundTargetPlayer = false;
@@ -117,7 +120,7 @@ void App::registerPage() {
         return;
     }
 
-    std::cout << "password: ";
+    std::cout << "密码: ";
     std::cin >> password;
 
     if (password.size() < 6 || password.size() > 16) {
@@ -155,7 +158,24 @@ void App::gameLobby() {
     while (true) {
         system("cls");
         fflush(stdin);
-        std::cout << "1: 开始游戏\n2: 查看排行榜\n3: 游戏说明\n4: 个人设置\n0：退出游戏" << std::endl;
+        DrawerHelper::drawFrame(0, 0, 15, 10);
+
+        DrawerHelper::moveCursorTo(2, 1);
+        std::cout << "象棋-技能版" << std::endl;
+
+        DrawerHelper::moveCursorTo(2, 3);
+        std::cout << "1: 开始游戏" << std::endl;
+        DrawerHelper::moveCursorTo(2, 4);
+        std::cout << "2: 查看排行" << std::endl;
+        DrawerHelper::moveCursorTo(2, 5);
+        std::cout << "3: 游戏说明" << std::endl;
+        DrawerHelper::moveCursorTo(2, 6);
+        std::cout << "4: 个人设置" << std::endl;
+        DrawerHelper::moveCursorTo(2, 7);
+        std::cout << "0：退出游戏" << std::endl;
+        DrawerHelper::moveCursorTo(2, 8);
+        std::cout << "你的选择：";
+
         ch = getchar();
         switch (ch) {
             case '1': {
@@ -195,7 +215,7 @@ std::string App::invitePlayer() {
     std::cin >> id;
 
     // TODO: replace with *
-    std::cout << "password: ";
+    std::cout << "密码: ";
     std::cin >> password;
 
     Player targetPlayer;

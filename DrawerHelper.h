@@ -50,6 +50,31 @@ public:
         HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
         SetConsoleTextAttribute(handle, foreColor | backColor);
     }
+
+    static void drawRow(short y, short l, short r) {
+        moveCursorTo(l, y);
+        for (int i = 0; i <= r - l; ++i) {
+            printf("-");
+        }
+    }
+    static void drawCol(short x, short u, short d) {
+        for (int i = 0; i <= d - u; ++i) {
+            moveCursorTo(x, u + i);
+            printf("|");
+        }
+    }
+    static void drawFrame(short l, short u, short r, short d) {
+        drawRow(u, l, r);
+        drawRow(d, l, r);
+        drawCol(l, u ,d);
+        drawCol(r, u ,d);
+    }
+
+    static void drawInfo() {
+        drawFrame(40, 0, 60, 20);
+        moveCursorTo(41, 1);
+        printf("制作人：TJ");
+    }
 };
 
 
