@@ -1,6 +1,8 @@
 #include "Game.h"
 
+
 const std::string surrenderCode = "gg";
+const std::string skipCode = "00";
 
 
 void Game::drawGame() {
@@ -16,7 +18,7 @@ void Game::drawGame() {
     DrawerHelper::moveCursorTo(11, 3);
     printf("天梯分: %d", _player1.getScore());
     DrawerHelper::moveCursorTo(11, 4);
-    printf("可用技能: ");
+    printf("可用技能: %s", skills1.c_str());
 
     DrawerHelper::moveCursorTo(11, 6);
     printf("玩家2");
@@ -28,24 +30,58 @@ void Game::drawGame() {
     DrawerHelper::moveCursorTo(11, 8);
     printf("天梯分: %d", _player2.getScore());
     DrawerHelper::moveCursorTo(11, 9);
-    printf("可用技能: ");
+    printf("可用技能: %s", skills2.c_str());
 
-    DrawerHelper::moveCursorTo(1, 11);
-    printf("输入棋子坐标: ");
+    DrawerHelper::moveCursorTo(0, 11);
+    printf("投降：gg 跳过回合：00 使用技能: -[jmsht]");
+
+    DrawerHelper::moveCursorTo(0, 12);
 }
 
 
 GameStatus Game::startGame() {
     system("cls");
 
+    // operate count
+    int round = 1;
+
     while (!check()) {
-        if (updateGame()) {
-            // valid operation, change player
-            if (_player == 1) {
-                _player = 2;
-            } else {
-                _player = 1;
-            }
+        GameUpdateResult updateResult = updateGame();
+        switch (updateResult) {
+            case UPDATE_FAIL:
+                break;
+
+            case UPDATE_SUCCESS:
+                if (--round > 0) {
+                    break;
+                }
+
+                // thaw the frozen chess
+                for (auto &c: _chessBoard.getChess1()) {
+                    if (c.canNotMove > 0) {
+                        --c.canNotMove;
+                    }
+                }
+                for (auto &c: _chessBoard.getChess2()) {
+                    if (c.canNotMove > 0) {
+                        --c.canNotMove;
+                    }
+                }
+
+                // valid operation, change player
+                if (_player == 1) {
+                    _player = 2;
+                } else {
+                    _player = 1;
+                }
+                // next player runs 1 round
+                round = 1;
+                break;
+
+            case UPDATE_ONE_MORE:
+                // this player runs two continuous round
+                round = 2;
+                break;
         }
     }
 
@@ -76,6 +112,7 @@ bool Game::check() {
 
 
 std::string inputPos() {
+    printf("目标坐标：");
     std::string pos;
     std::cin >> pos;
     return pos;
@@ -155,61 +192,108 @@ void Game::surrender() {
 }
 
 
-bool Game::updateGame() {
+SkillResult Game::useSkill(std::string &skill) {
+    char skillChar = skill[1];
+    if (skillChar == 'j') {
+        return SkillHelper::useSkill(skillChar, _player, 0, 0, _chessBoard);
+    }
+
+    auto pos = inputPos();
+    if (!isValidPos(pos)) {
+        return SKILL_FAIL;
+    }
+
+    short x = pos[0] - '1' + 1, y = pos[1] - 'a' + 1;
+
+    return SkillHelper::useSkill(skillChar, _player, x, y, _chessBoard);
+}
+
+
+GameUpdateResult Game::updateGame() {
     system("cls");
     drawGame();
     auto srcPos = inputPos();
 
+    if (srcPos[0] == '-') {
+        if (srcPos.size() != 2) {
+            return UPDATE_FAIL;
+        }
+        auto skillRes = useSkill(srcPos);
+        switch (skillRes) {
+            case SKILL_FAIL:
+                return UPDATE_FAIL;
+            case SKILL_SUCCESS:
+                if (_player == 1) {
+                    skills1.erase(skills1.find(srcPos[1]), 1);
+                } else {
+                    skills2.erase(skills2.find(srcPos[1]), 1);
+                }
+                return UPDATE_SUCCESS;
+            case ONE_MORE_TURN:
+                if (_player == 1) {
+                    skills1.erase(skills1.find(srcPos[1]), 1);
+                } else {
+                    skills2.erase(skills1.find(srcPos[1]), 1);
+                }
+                return UPDATE_ONE_MORE;
+        }
+    }
+
     // surrender
     if (srcPos == surrenderCode) {
         surrender();
-        return false;
+        return UPDATE_FAIL;
+    } else if (srcPos == skipCode) {
+        return UPDATE_SUCCESS;
     }
 
     if (!isValidPos(srcPos)) {
-        return false;
+        return UPDATE_FAIL;
     }
 
     short srcX = srcPos[0] - '1' + 1, srcY = srcPos[1] - 'a' + 1;
 
     if (!hasValidChess(srcX, srcY)) {
-        return false;
+        return UPDATE_FAIL;
     }
-
 
     int tarChessIndex = getChessByPos(srcX, srcY);
 
-    printf("移动到:");
-
-    auto tarPos = inputPos();
-    // surrender
-    if (srcPos == surrenderCode) {
-        surrender();
-        return false;
+    if (tarChessIndex == -1) {
+        return UPDATE_FAIL;
     }
 
+    // second input
+    auto tarPos = inputPos();
+
     if (!isValidPos(tarPos)) {
-        return false;
+        return UPDATE_FAIL;
     }
     short tarX = tarPos[0] - '1' + 1, tarY = tarPos[1] - 'a' + 1;
 
     if (tarX == srcX && tarY == srcY) {
-        return false;
+        return UPDATE_FAIL;
     }
 
     if (!moveChess(tarChessIndex, tarX, tarY)) {
-        return false;
+        return UPDATE_FAIL;
     }
 
-    return true;
+    return UPDATE_SUCCESS;
 }
 
 
 bool Game::moveChess(int tarChessIndex, short tarX, short tarY) {
     ChessCategory cate;
     if (_player == 1) {
+        if (_chessBoard.getChess1()[tarChessIndex].canNotMove > 0) {
+            return false;
+        }
         cate = _chessBoard.getChess1()[tarChessIndex].chessCategory;
     } else {
+        if (_chessBoard.getChess2()[tarChessIndex].canNotMove > 0) {
+            return false;
+        }
         cate = _chessBoard.getChess2()[tarChessIndex].chessCategory;
     }
 

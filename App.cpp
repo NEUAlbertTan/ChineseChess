@@ -237,6 +237,9 @@ void App::startGame() {
             break;
         }
     }
+    if (targetPlayerID == _currentPlayerID) {
+        return;
+    }
     _game = Game(_currentPlayer, tarPlayer,_currentPlayerID, targetPlayerID);
 
     GameStatus gameResult = _game.startGame();
@@ -271,6 +274,9 @@ void App::gameSettlement(GameStatus gameResult, std::string &playerID1, std::str
             }
             break;
     }
+
+    printf("Íæ¼Ò%dÊ¤Àû£¡", gameResult == PLAYER_1_CHECK ? 1 : 2);
+    Sleep(1000);
     savePlayers();
 }
 

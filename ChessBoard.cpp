@@ -44,9 +44,9 @@ void ChessBoard::drawChessBoard() {
     }
 
     for (auto & chess : _chess1) {
-        chess.drawChess();
+        chess.draw();
     }
     for (auto & chess : _chess2) {
-        chess.drawChess();
+        chess.draw();
     }
 }
