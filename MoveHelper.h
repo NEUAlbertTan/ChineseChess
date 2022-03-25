@@ -7,12 +7,12 @@
 #include "unordered_map"
 
 
-enum MOVE_RESULT {PLAIN, EAT, MOVE_FAIL};
+enum MoveResult {PLAIN, EAT, MOVE_FAIL};
 
 
 class MoveHelper {
 public:
-    static MOVE_RESULT
+    static MoveResult
     MoveChess(ChessCategory cate, int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard);
 
     static bool kingCanMove(int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard);

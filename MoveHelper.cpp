@@ -461,7 +461,7 @@ bool MoveHelper::pawnCanMove(int player, int chessIndex, short tarX, short tarY,
 }
 
 
-MOVE_RESULT MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard) {
+MoveResult MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex, short tarX, short tarY, ChessBoard &chessBoard) {
 
     if (blockedByAlly(tarX, tarY, player, chessBoard)) {
         return MOVE_FAIL;
@@ -494,6 +494,9 @@ MOVE_RESULT MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex
         case PAWN:
             canMove = pawnCanMove(player, chessIndex, tarX, tarY, chessBoard);
             break;
+        case BLOCK:
+            canMove = false;
+            break;
     }
 
     if (!canMove) {
@@ -507,6 +510,5 @@ MOVE_RESULT MoveHelper::MoveChess(ChessCategory cate, int player, int chessIndex
         }
         return eatRes ? EAT : PLAIN;
     }
-
 
 }

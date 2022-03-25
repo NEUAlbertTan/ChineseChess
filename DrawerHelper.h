@@ -57,17 +57,27 @@ public:
             printf("-");
         }
     }
+
     static void drawCol(short x, short u, short d) {
         for (int i = 0; i <= d - u; ++i) {
             moveCursorTo(x, u + i);
             printf("|");
         }
     }
+
     static void drawFrame(short l, short u, short r, short d) {
         drawRow(u, l, r);
         drawRow(d, l, r);
         drawCol(l, u ,d);
         drawCol(r, u ,d);
+        moveCursorTo(l, u);
+        printf("+");
+        moveCursorTo(l, d);
+        printf("+");
+        moveCursorTo(r, u);
+        printf("+");
+        moveCursorTo(r, d);
+        printf("+");
     }
 
     static void drawInfo() {
@@ -75,6 +85,7 @@ public:
         moveCursorTo(41, 1);
         printf("制作人：TJ");
     }
+
 };
 
 

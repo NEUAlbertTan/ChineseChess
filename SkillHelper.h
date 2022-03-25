@@ -12,6 +12,7 @@ enum SkillResult {SKILL_FAIL = 0, SKILL_SUCCESS, ONE_MORE_TURN};
 class SkillHelper {
 public:
     static SkillResult useSkill(char skillChar, int player, short x, short y, ChessBoard &chessBoard);
+
     static SkillResult useSkill(SkillType skillType, int player, short x, short y, ChessBoard &chessBoard);
 };
 

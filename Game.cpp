@@ -297,7 +297,7 @@ bool Game::moveChess(int tarChessIndex, short tarX, short tarY) {
         cate = _chessBoard.getChess2()[tarChessIndex].chessCategory;
     }
 
-    MOVE_RESULT moveRes = MoveHelper::MoveChess(cate, _player, tarChessIndex, tarX, tarY, _chessBoard);
+    MoveResult moveRes = MoveHelper::MoveChess(cate, _player, tarChessIndex, tarX, tarY, _chessBoard);
 
     return moveRes != MOVE_FAIL;
 

@@ -3,7 +3,6 @@
 bool FileSys::savePlayers(std::vector<Player> & players) {
     std::ofstream out;
 
-
     try {
         out.open(_filePath);
     } catch (std::exception & e) {

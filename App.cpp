@@ -260,6 +260,7 @@ void App::startGame() {
     if (targetPlayerID == _currentPlayerID) {
         return;
     }
+    DrawerHelper::SetConsoleColor(enmCFC_Black, enmCBC_HighWhite);
     _game = Game(_currentPlayer, tarPlayer,_currentPlayerID, targetPlayerID);
 
     GameStatus gameResult = _game.startGame();

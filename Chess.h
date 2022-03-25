@@ -34,8 +34,6 @@ public:
         return xx == this->x && yy == this->y;
     }
 
-    void attack();
-
     void draw() const;
 
     void setXY(short xx, short yy) {
