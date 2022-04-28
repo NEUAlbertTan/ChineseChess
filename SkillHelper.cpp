@@ -108,7 +108,7 @@ SkillResult SkillHelper::useSkill(SkillType skillType, int player, short x, shor
                 if (player == 1) {
                     chessBoard.getChess1().emplace_back(Chess(BLOCK, x, y, 1, 10000));
                 } else {
-                    chessBoard.getChess2().emplace_back(Chess(BLOCK, x, y, 1, 10000));
+                    chessBoard.getChess2().emplace_back(Chess(BLOCK, x, y, 2, 10000));
                 }
             }
             return SKILL_SUCCESS;

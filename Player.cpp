@@ -24,7 +24,8 @@ bool Player::decMoney(unsigned int n) {
 void Player::decScore(unsigned int n) {
     if (_score <= n) {
         _score = 0;
+    } else {
+        _score -= n;
     }
 
-    _score -= n;
 }
